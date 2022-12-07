@@ -16,6 +16,6 @@ def subroutine(s):
 
 
 if __name__ == '__main__':
-    f = open("input.txt", "r")
+    f = open("input6.txt", "r")
     print(subroutine(f.read()))
     f.close()
