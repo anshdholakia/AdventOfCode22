@@ -6,7 +6,8 @@ class System:
         self.dirs["/"] = {'file':0}
         self.path=["/"]
         self.res=0
-        self.min = 0
+        self.total=0
+        self.req=float('inf')
 
     def run(self, messg):
         if messg.startswith("$"):
@@ -40,6 +41,30 @@ class System:
             self.res+=countt
         return countt
 
+    def calculate_total(self, pathh):
+        countt = int(pathh["file"])
+        for i in pathh:
+            if(i!="file"):
+                countt+=self.calculate_total(pathh[i])
+        self.res+=countt
+        self.total = countt - 40000000
+        return countt
+
+    def calculate_minimum(self, pathh):
+        countt = int(pathh["file"])
+        for i in pathh:
+            if(i!="file"):
+                countt+=self.calculate_minimum(pathh[i])
+        self.res+=countt
+
+        if(countt>self.total):
+            self.req=min(self.req, countt)
+
+        return countt
+
+
+
+
             
 
 
@@ -49,6 +74,12 @@ if __name__ == '__main__':
     f=open("input7.txt", "r")
     for i in f.readlines():
         system.run(i.strip())
-    system.calculate(system.dirs["/"])
-    print(system.res)
+    # part 1
+    # system.calculate(system.dirs["/"])
+    # print(system.res)
+    # part 2
+    system.calculate_total(system.dirs["/"])
+    system.calculate_minimum(system.dirs["/"])
+    print(system.req)
+    
     f.close()
